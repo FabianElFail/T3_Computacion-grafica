@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Operación Extracción</title>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<style>
+  :root { --bg:#14110f; --bone:#e8dfd0; --blood:#b3261e; --dim:#8c8272; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; height:100%; overflow:hidden; background:#000; font-family:"Bahnschrift","Arial Narrow",Arial,sans-serif; color:var(--bone); }
+  canvas { display:block; width:100%; height:100%; }
+  #cross { position:fixed; left:50%; top:50%; width:14px; height:14px; margin:-7px 0 0 -7px; pointer-events:none; }
+  #cross::before, #cross::after { content:""; position:absolute; background:var(--bone); }
+  #cross::before { left:6px; top:0; width:2px; height:14px; }
+  #cross::after { top:6px; left:0; height:2px; width:14px; }
+  #cross.hit::before, #cross.hit::after { background:var(--blood); }
+  #hud { position:fixed; left:24px; bottom:22px; pointer-events:none; text-shadow:0 2px 6px #000; }
+  #ammo { font-size:56px; line-height:1; font-weight:700; }
+  #ammo.empty { color:var(--blood); }
+  #wname { font-size:18px; color:var(--dim); }
+  #side { position:fixed; right:24px; top:20px; text-align:right; font-size:18px; text-shadow:0 2px 6px #000; pointer-events:none; }
+  #msg { position:fixed; left:50%; top:18%; transform:translateX(-50%); font-size:22px; opacity:0; transition:opacity .3s; text-shadow:0 2px 6px #000; pointer-events:none; }
+  #msg.on { opacity:1; }
+  .screen { position:fixed; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; gap:14px; text-align:center; padding:24px; background:rgba(20,17,15,.82); }
+  .screen.on { display:flex; }
+  .screen h1 { margin:0; font-size:clamp(36px,7vw,80px); letter-spacing:.02em; }
+  .screen p { margin:0; max-width:520px; line-height:1.5; color:var(--dim); }
+  #over h1 { color:var(--blood); }
+  button { font:inherit; font-size:18px; padding:12px 28px; border:2px solid var(--bone); background:transparent; color:var(--bone); cursor:pointer; }
+  button:hover, button:focus-visible { background:var(--bone); color:var(--bg); outline:none; }
+  kbd { border:1px solid var(--dim); padding:1px 7px; border-radius:3px; color:var(--bone); }
+  @media (prefers-reduced-motion: reduce) { #msg { transition:none; } }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="cross"></div>
+<div id="hud"><div id="ammo">0</div><div id="wname"></div></div>
+<div id="side"><div id="zleft"></div></div>
+<div id="msg"></div>
+
+<div id="start" class="screen on">
+  <h1>Operación Extracción</h1>
+  <p>Atraviesa la zona infestada y llega al punto de extracción. La munición es limitada: solo se recupera con las cajas del escenario.</p>
+  <p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> moverse · Mouse apuntar · Clic disparar · <kbd>1</kbd> <kbd>2</kbd> cambiar arma · <kbd>R</kbd> reiniciar</p>
+  <p id="note"></p>
+  <button id="play" disabled>Cargando modelos…</button>
+</div>
+<div id="over" class="screen"><h1>GAME OVER</h1><p>Un zombi te atrapó.</p><button onclick="location.reload()">Reiniciar</button></div>
+<div id="win" class="screen"><h1>¡MISIÓN COMPLETADA!</h1><p>Has llegado a la zona de extracción.</p><button onclick="location.reload()">Jugar de nuevo</button></div>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
